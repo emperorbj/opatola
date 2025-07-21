@@ -32,7 +32,7 @@ const Portfolio = () => {
     message: ''
   });
   const [formStatus, setFormStatus] = useState('');
-  const [formErrors, setFormErrors] = useState({});
+  const [formErrors, setFormErrors] = useState({}) as any;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -52,7 +52,7 @@ const Portfolio = () => {
   };
 
   const validateForm = () => {
-    const errors = {};
+    const errors = {} as any;
     if (!formData.name.trim()) errors.name = 'Name is required';
     if (!formData.email.trim()) errors.email = 'Email is required';
     else if (!/\S+@\S+\.\S+/.test(formData.email)) errors.email = 'Email is invalid';
@@ -63,21 +63,50 @@ const Portfolio = () => {
     return Object.keys(errors).length === 0;
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (validateForm()) {
-      setFormStatus('sending');
-      // Simulate sending delay
-      setTimeout(() => {
-        const mailtoLink = `mailto:alex.developer@example.com?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`)}`;
-        window.location.href = mailtoLink;
-        setFormStatus('success');
-        setFormData({ name: '', email: '', subject: '', message: '' });
-      }, 1000);
-    }
-  };
+  
+      const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (validateForm()) {
+          setFormStatus('sending');
+          try {
+            const response = await fetch('https://formspree.io/f/mvgqzylq', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(formData),
+            });
 
-  const handleInputChange = (e) => {
+            if (response.ok) {
+              setFormStatus('success');
+              setFormData({ name: '', email: '', subject: '', message: '' });
+              setTimeout(() => setFormStatus(''), 5000); // Clear success message after 5 seconds
+            } else {
+              setFormStatus('error');
+              setTimeout(() => setFormStatus(''), 5000); // Clear error message after 5 seconds
+            }
+          } catch (error) {
+            setFormStatus('error');
+            setTimeout(() => setFormStatus(''), 5000); // Clear error message after 5 seconds
+          }
+        }
+      };
+
+  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   if (validateForm()) {
+  //     setFormStatus('sending');
+  //     // Simulate sending delay
+  //     setTimeout(() => {
+  //       const mailtoLink = `mailto:alex.developer@example.com?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`)}`;
+  //       window.location.href = mailtoLink;
+  //       setFormStatus('success');
+  //       setFormData({ name: '', email: '', subject: '', message: '' });
+  //     }, 1000);
+  //   }
+  // };
+
+  const handleInputChange = (e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
     // Clear error when user starts typing
@@ -86,46 +115,90 @@ const Portfolio = () => {
     }
   };
 
-  const projects = [
+  const projects:any = [
     {
       id: 1,
-      title: "EcoCommerce Platform",
+      title: "OpexA App Platform",
       type: "Web App",
-      image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=600&h=400&fit=crop",
-      description: "A sustainable e-commerce platform that connects eco-friendly brands with conscious consumers. Features real-time inventory, carbon footprint tracking, and social impact metrics.",
-      technologies: ["React", "Node.js", "MongoDB", "Stripe", "Tailwind CSS"],
-      liveDemo: "https://ecocommerce-demo.com",
-      sourceCode: "https://github.com/alexdev/ecocommerce"
+      image: "https://res.cloudinary.com/dpp46k83h/image/upload/v1753113462/Screenshot_2025-07-21_143627_tfj18l.png",
+      description: "An Edtech platform that guides user to choose a career, provides learning paths, assess them and even have a job application feature.",
+      technologies: ["Nextjs", "Node.js", "MongoDB", "flutterwave", "ShadcnUI", "Tailwind CSS","React Query"],
+      liveDemo: "https://opexa.app/",
+      sourceCode: false
     },
     {
       id: 2,
-      title: "FitTracker Mobile",
-      type: "Mobile App",
-      image: "https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?w=400&h=600&fit=crop",
-      description: "A comprehensive fitness tracking app with AI-powered workout recommendations, nutrition planning, and social challenges. Available for both iOS and Android.",
-      technologies: ["React Native", "Firebase", "TensorFlow", "Redux"],
-      apkDownload: "https://github.com/alexdev/fittracker/releases/download/v1.0/fittracker.apk",
-      sourceCode: "https://github.com/alexdev/fittracker"
+      title: "OpexA Affiliate App",
+      type: "Web App",
+      image: "https://res.cloudinary.com/dpp46k83h/image/upload/v1753113892/Screenshot_2025-07-21_170427_yucbes.png",
+      description: "A platform that allows users to earn money by promoting products and services through affiliate marketing. Users can track their earnings, manage campaigns, and access marketing resources.",
+      technologies: ["Nextjs", "Node.js", "MongoDB", "flutterwave", "ShadcnUI", "Tailwind CSS","React Query"],
+      liveDemo: "https://affiliate.opexa.app/dashboard",
+      sourceCode: false
     },
     {
       id: 3,
-      title: "WeatherAPI Pro",
-      type: "API",
-      image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&h=400&fit=crop",
-      description: "A robust weather API providing real-time forecasts, historical data, and climate analytics. Serves over 10,000 requests daily with 99.9% uptime.",
-      technologies: ["Node.js", "Express", "PostgreSQL", "Redis", "Docker"],
-      liveDemo: "https://weatherapi-pro.com/docs",
-      sourceCode: "https://github.com/alexdev/weather-api"
-    }
+      title: "Opexa Corporate App",
+      type: "Web App",
+      image: "https://res.cloudinary.com/dpp46k83h/image/upload/v1753113913/Screenshot_2025-07-21_170236_rsfqtv.png",
+      description: "A part of the OpexA ecosystem that provides a robust plafform for managing corporate training programs, job application listings,.",
+      technologies: ["Nextjs", "Node.js", "MongoDB", "flutterwave", "ShadcnUI", "Tailwind CSS","React Query"],
+      liveDemo: "https://corporate.opexa.app/auth/signup",
+      sourceCode: false
+    },
+    {
+      id: 4,
+      title: "Renergy App",
+      type: "Web App",
+      image: "https://res.cloudinary.com/dpp46k83h/image/upload/v1753113446/Screenshot_2025-07-21_152845_fzn0zo.png",
+      description: "A platform that provides users access to renewable energy solutions, including solar panel installations, energy efficiency tips, and a marketplace for eco-friendly products.",
+      technologies: ["Nextjs", "Node.js", "MongoDB", "flutterwave", "ShadcnUI", "Tailwind CSS","React Query"],
+      liveDemo: "https://www.renergyhub.com.ng/",
+      sourceCode: false
+    },
+      {
+      id: 5,
+      title: "Botydoc AI",
+      type: "Mobile App",
+      image: "https://res.cloudinary.com/dpp46k83h/image/upload/v1753114570/Image_fx_1_jchfhx.png",
+      description: "A RAG AI Agent that takes documents and allows user to interact with it.",
+      technologies: ["ReactNative", "FastApi", "MongoDB","React Query"],
+       apkDownload: "https://drive.google.com/file/d/1JyRpAXCSJJ8P9v5Cf9mQWuGN1YqG9MVg/view?usp=sharing",
+      sourceCode: true,
+      github: "https://github.com/emperorbj/botydoc"
+    },
+      {
+      id: 5,
+      title: "Apologia App",
+      type: "Mobile App",
+      image: "https://res.cloudinary.com/dpp46k83h/image/upload/v1753114575/Image_fx_2_k2cbih.png",
+      description: "An Apologetics app.",
+      technologies: ["ReactNative", "Nodejs", "MongoDB","React Query","Gemini AI"],
+       apkDownload: "https://drive.google.com/file/d/1gF8ON-I7wDbG_TUo_ZMm6FAnBudWPyeK/view?usp=sharing",
+      sourceCode: true
+    },
+    {
+      id: 5,
+      title: "Boodio App",
+      type: "Mobile App",
+      image: "https://res.cloudinary.com/dpp46k83h/image/upload/v1753114569/Image_fx_3_obye4r.png",
+      description: "An Apologetics app.",
+      technologies: ["ReactNative", "Supabase","React Query"],
+      apkDownload: "",
+      sourceCode: true,
+      github: "https://github.com/emperorbj/boodio"
+    },
   ];
 
   const skills = {
-    "Languages": ["JavaScript", "TypeScript", "Python", "Java", "Swift", "Kotlin"],
-    "Frontend": ["React", "Vue.js", "Angular", "HTML5", "CSS3", "Tailwind CSS"],
-    "Backend": ["Node.js", "Express", "Django", "Spring Boot", "Firebase", "Supabase"],
-    "Mobile": ["React Native", "Flutter", "iOS (Swift)", "Android (Kotlin)"],
-    "Databases": ["MongoDB", "PostgreSQL", "MySQL", "Redis", "SQLite"],
-    "Tools": ["Git", "Docker", "AWS", "Jenkins", "Postman", "Figma"]
+    "Languages": ["JavaScript", "TypeScript", "Python",],
+    "Frontend": ["React", "Vue.js", "Angular", "HTML5", "CSS3", "Tailwind CSS","Next.js", "ShadcnUI"],
+    "Backend": ["Node.js", "Express", "FastApi", "Appwrite", "Supabase"],
+    "Mobile": ["React Native"],
+    "Databases": ["MongoDB", "PostgreSQL", "MySQL", "Redis",],
+    "Tools": ["Git", "Docker", "Postman", "Figma", "click-up", "Slack"],
+    "Cloud": ["Google Cloud Platform"],
+    "AI and Frameworks": ["LangChain","Langgraph","OpenAI","Gemini AI","FAISS"],
   };
 
   return (
@@ -136,7 +209,7 @@ const Portfolio = () => {
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
-            <div className="text-xl font-bold text-blue-400">Alex Chen</div>
+            <div className="text-xl font-bold text-blue-400">Bolaji Opatola</div>
             
             {/* Desktop Navigation */}
             <div className="hidden md:flex space-x-8">
@@ -182,14 +255,14 @@ const Portfolio = () => {
         <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 to-purple-900/20"></div>
         <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
           <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-            Alex Chen
+            Bolaji Opatola
           </h1>
           <h2 className="text-2xl md:text-3xl text-gray-300 mb-6">
-            Full-Stack Developer & Mobile Innovator
+            Full-Stack (Web/Mobile) & AI Solutions Developer
           </h2>
           <p className="text-lg text-gray-400 mb-8 max-w-2xl mx-auto">
             Crafting digital experiences that bridge creativity and technology. 
-            Specializing in web applications, mobile solutions, and scalable APIs.
+            Specializing in web applications, mobile and AI solutions, and scalable APIs.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
@@ -219,12 +292,12 @@ const Portfolio = () => {
               <h2 className="text-4xl font-bold mb-6 text-blue-400">About Me</h2>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  Welcome! I'm Alex, a passionate full-stack developer with over 5 years of experience 
+                  Welcome! I'm Bolaji, a passionate full-stack developer with over 3 years of experience 
                   creating innovative digital solutions. My journey began with a fascination for how 
                   code can transform ideas into reality, and that curiosity continues to drive me today.
                 </p>
                 <p>
-                  I specialize in building scalable web applications, intuitive mobile apps, and robust 
+                  I specialize in building scalable web applications, intuitive mobile and AI apps, and robust 
                   APIs that power modern businesses. From startups to enterprise clients, I've helped 
                   organizations leverage technology to achieve their goals and create meaningful user experiences.
                 </p>
@@ -237,19 +310,19 @@ const Portfolio = () => {
               <div className="flex flex-wrap gap-4 mt-6">
                 <div className="flex items-center gap-2 text-blue-400">
                   <Briefcase className="h-5 w-5" />
-                  <span>5+ Years Experience</span>
+                  <span>3+ Years Experience</span>
                 </div>
                 <div className="flex items-center gap-2 text-blue-400">
                   <Star className="h-5 w-5" />
-                  <span>50+ Projects Completed</span>
+                  <span>10+ Projects Completed</span>
                 </div>
               </div>
             </div>
             <div className="order-1 md:order-2">
               <div className="relative">
                 <img
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=600&fit=crop&crop=face"
-                  alt="Alex Chen"
+                  src="https://res.cloudinary.com/dpp46k83h/image/upload/v1753113423/DSC_3555_copy_2_cxynkl.jpg"
+                  alt="Bolaji Opatola"
                   className="rounded-lg shadow-2xl w-full max-w-md mx-auto"
                 />
                 <div className="absolute inset-0 rounded-lg bg-gradient-to-tr from-blue-600/20 to-purple-600/20"></div>
@@ -264,7 +337,7 @@ const Portfolio = () => {
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl font-bold text-center mb-12 text-blue-400">Featured Projects</h2>
           <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-8">
-            {projects.map((project) => (
+            {projects.map((project:any) => (
               <div key={project.id} className="bg-gray-800 rounded-lg overflow-hidden shadow-xl hover:shadow-2xl transition-shadow">
                 <img
                   src={project.image}
@@ -286,7 +359,7 @@ const Portfolio = () => {
                   </div>
                   <p className="text-gray-300 mb-4">{project.description}</p>
                   <div className="flex flex-wrap gap-2 mb-4">
-                    {project.technologies.map((tech) => (
+                    {project.technologies.map((tech:any) => (
                       <span key={tech} className="bg-gray-700 px-2 py-1 rounded text-xs">
                         {tech}
                       </span>
@@ -297,35 +370,37 @@ const Portfolio = () => {
                       <>
                         <a
                           href={project.apkDownload}
-                          className="flex-1 bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg text-center transition-colors flex items-center justify-center gap-2"
+                          className="flex-1 text-sm bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg text-center transition-colors flex items-center justify-center gap-2"
                         >
                           <Download className="h-4 w-4" />
                           Download APK
                         </a>
-                        <a
-                          href={project.sourceCode}
-                          className="flex-1 border border-gray-600 hover:border-blue-400 px-4 py-2 rounded-lg text-center transition-colors flex items-center justify-center gap-2"
+                        {project.sourceCode && <a
+                          href={project?.github}
+                          className={`flex flex-1 border text-sm border-gray-600 hover:border-blue-400 px-4 py-2 rounded-lg text-center transition-colors  items-center justify-center gap-2`}
                         >
                           <Github className="h-4 w-4" />
                           View Code
                         </a>
+                        }
                       </>
                     ) : (
                       <>
                         <a
                           href={project.liveDemo}
-                          className="flex-1 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-center transition-colors flex items-center justify-center gap-2"
+                          className="flex-1 text-sm bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-center transition-colors flex items-center justify-center gap-2"
                         >
                           <ExternalLink className="h-4 w-4" />
                           Live Demo
                         </a>
-                        <a
-                          href={project.sourceCode}
-                          className="flex-1 border border-gray-600 hover:border-blue-400 px-4 py-2 rounded-lg text-center transition-colors flex items-center justify-center gap-2"
+                        {project.sourceCode && <a
+                          href={project.github}
+                          className={`flex flex-1 text-sm border border-gray-600 hover:border-blue-400 px-4 py-2 rounded-lg text-center transition-colors  items-center justify-center gap-2`}
                         >
                           <Github className="h-4 w-4" />
                           View Code
                         </a>
+                        }
                       </>
                     )}
                   </div>
@@ -360,129 +435,139 @@ const Portfolio = () => {
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="py-20 px-4 bg-gray-800/50">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-6 text-blue-400">Let's Build Something Together</h2>
-          <p className="text-center text-gray-300 mb-12">
-            Have a project in mind? I'd love to hear about it and discuss how we can bring your ideas to life.
-          </p>
-          
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium mb-2">Your Name</label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  className={`w-full px-4 py-3 bg-gray-700 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                    formErrors.name ? 'border-red-500' : 'border-gray-600'
-                  }`}
-                  placeholder="John Doe"
-                />
-                {formErrors.name && <p className="text-red-400 text-sm mt-1">{formErrors.name}</p>}
-              </div>
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium mb-2">Your Email</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  className={`w-full px-4 py-3 bg-gray-700 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                    formErrors.email ? 'border-red-500' : 'border-gray-600'
-                  }`}
-                  placeholder="john@example.com"
-                />
-                {formErrors.email && <p className="text-red-400 text-sm mt-1">{formErrors.email}</p>}
-              </div>
-            </div>
-            <div>
-              <label htmlFor="subject" className="block text-sm font-medium mb-2">Subject</label>
-              <input
-                type="text"
-                id="subject"
-                name="subject"
-                value={formData.subject}
-                onChange={handleInputChange}
-                className={`w-full px-4 py-3 bg-gray-700 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                  formErrors.subject ? 'border-red-500' : 'border-gray-600'
-                }`}
-                placeholder="Project Collaboration"
-              />
-              {formErrors.subject && <p className="text-red-400 text-sm mt-1">{formErrors.subject}</p>}
-            </div>
-            <div>
-              <label htmlFor="message" className="block text-sm font-medium mb-2">Message</label>
-              <textarea
-                id="message"
-                name="message"
-                rows={6}
-                value={formData.message}
-                onChange={handleInputChange}
-                className={`w-full px-4 py-3 bg-gray-700 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                  formErrors.message ? 'border-red-500' : 'border-gray-600'
-                }`}
-                placeholder="Tell me about your project..."
-              ></textarea>
-              {formErrors.message && <p className="text-red-400 text-sm mt-1">{formErrors.message}</p>}
-            </div>
-            <button
-              type="submit"
-              disabled={formStatus === 'sending'}
-              className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 px-8 py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
-            >
-              {formStatus === 'sending' ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  Sending...
-                </>
-              ) : (
-                <>
-                  <Mail className="h-5 w-5" />
-                  Send Message
-                </>
-              )}
-            </button>
-          </form>
+    {/* Contact Section */}
+          <section id="contact" className="py-20 px-4 bg-gray-800/50">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="text-4xl font-bold text-center mb-6 text-blue-400">Let's Build Something Together</h2>
+              <p className="text-center text-gray-300 mb-12">
+                Have a project in mind? I'd love to hear about it and discuss how we can bring your ideas to life.
+              </p>
+              
+              <form
+                action="https://formspree.io/f/mvgqzylq"
+                method="POST"
+                onSubmit={handleSubmit}
+                className="space-y-6"
+              >
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium mb-2">Your Name</label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      className={`w-full px-4 py-3 bg-gray-700 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                        formErrors.name ? 'border-red-500' : 'border-gray-600'
+                      }`}
+                      placeholder="John Doe"
+                    />
+                    {formErrors.name && <p className="text-red-400 text-sm mt-1">{formErrors.name}</p>}
+                  </div>
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium mb-2">Your Email</label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      className={`w-full px-4 py-3 bg-gray-700 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                        formErrors.email ? 'border-red-500' : 'border-gray-600'
+                      }`}
+                      placeholder="john@example.com"
+                    />
+                    {formErrors.email && <p className="text-red-400 text-sm mt-1">{formErrors.email}</p>}
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="subject" className="block text-sm font-medium mb-2">Subject</label>
+                  <input
+                    type="text"
+                    id="subject"
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleInputChange}
+                    className={`w-full px-4 py-3 bg-gray-700 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                      formErrors.subject ? 'border-red-500' : 'border-gray-600'
+                    }`}
+                    placeholder="Project Collaboration"
+                  />
+                  {formErrors.subject && <p className="text-red-400 text-sm mt-1">{formErrors.subject}</p>}
+                </div>
+                <div>
+                  <label htmlFor="message" className="block text-sm font-medium mb-2">Message</label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows={6}
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    className={`w-full px-4 py-3 bg-gray-700 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                      formErrors.message ? 'border-red-500' : 'border-gray-600'
+                    }`}
+                    placeholder="Tell me about your project..."
+                  ></textarea>
+                  {formErrors.message && <p className="text-red-400 text-sm mt-1">{formErrors.message}</p>}
+                </div>
+                <button
+                  type="submit"
+                  disabled={formStatus === 'sending'}
+                  className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 px-8 py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+                >
+                  {formStatus === 'sending' ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Mail className="h-5 w-5" />
+                      Send Message
+                    </>
+                  )}
+                </button>
+              </form>
 
-          {formStatus === 'success' && (
-            <div className="mt-6 p-4 bg-green-600/20 border border-green-600 rounded-lg text-green-300 text-center">
-              Thank you! Your message has been sent successfully.
+              {formStatus === 'success' && (
+                <div className="mt-6 p-4 bg-green-600/20 border border-green-600 rounded-lg text-green-300 text-center">
+                  Thank you! Your message has been sent successfully.
+                </div>
+              )}
+              {formStatus === 'error' && (
+                <div className="mt-6 p-4 bg-red-600/20 border border-red-600 rounded-lg text-red-300 text-center">
+                  Oops! Something went wrong. Please try again later.
+                </div>
+              )}
             </div>
-          )}
-        </div>
-      </section>
+          </section>
 
       {/* Footer */}
       <footer className="bg-gray-900 py-12 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-6 md:mb-0">
-              <div className="text-xl font-bold text-blue-400 mb-2">Alex Chen</div>
-              <p className="text-gray-400">Full-Stack Developer & Mobile Innovator</p>
+              {/* <div className="text-xl font-bold text-blue-400 mb-2">Opatola Bolaji</div> */}
+              {/* <p className="text-gray-400">Full-Stack Developer & Mobile Innovator</p> */}
             </div>
             <div className="flex space-x-6">
               <a
-                href="https://github.com/alexchen"
+                href="https://github.com/emperorbj"
                 className="text-gray-400 hover:text-white transition-colors"
                 aria-label="GitHub"
               >
                 <Github className="h-6 w-6" />
               </a>
               <a
-                href="https://linkedin.com/in/alexchen"
+                href="https://linkedin.com/in/bolaji-opatola"
                 className="text-gray-400 hover:text-white transition-colors"
                 aria-label="LinkedIn"
               >
                 <Linkedin className="h-6 w-6" />
               </a>
               <a
-                href="https://twitter.com/alexchen"
+                href="https://x.com/BolajiOpatola"
                 className="text-gray-400 hover:text-white transition-colors"
                 aria-label="Twitter"
               >
@@ -500,3 +585,5 @@ const Portfolio = () => {
 };
 
 export default Portfolio;
+
+          
