@@ -146,6 +146,61 @@ const Portfolio = () => {
       liveDemo: "https://corporate.opexa.app/auth/signup",
       sourceCode: false
     },
+     {
+      id: 8,
+      title: "Blog Deployment",
+      type: "Cloud",
+      image: "https://source.unsplash.com/600x400/?cloud,storage",
+      description: "Deployment of a React Web app with Docker and AWS EC2 instance.",
+      technologies: ["React", "AWS EC2", "Docker",],
+      liveDemo: "https://www.loom.com/share/54cae3d026ee4cdba301550d39cea550?sid=6eb369be-3f63-44f5-a5ed-ea7caf72e719",
+      sourceCode: true,
+      github: "https://github.com/emperorbj/fresh-fable-forge"
+    },
+    // {
+    //   id: 9,
+    //   title: "Serverless Notes App",
+    //   type: "Cloud",
+    //   image: "https://source.unsplash.com/600x400/?serverless,notes",
+    //   description: "A serverless notes app built with AWS Lambda, API Gateway, and DynamoDB with secure authentication.",
+    //   technologies: ["Next.js", "AWS Lambda", "DynamoDB", "Cognito"],
+    //   liveDemo: "https://serverless-notes-demo.netlify.app",
+    //   sourceCode: true,
+    //   github: "https://github.com/emperorbj/serverless-notes"
+    // },
+    // {
+    //   id: 10,
+    //   title: "Realtime Chat Cloud",
+    //   type: "Cloud",
+    //   image: "https://source.unsplash.com/600x400/?chat,cloud",
+    //   description: "A real-time chat app deployed on Google Cloud Run with Firebase authentication and Firestore database.",
+    //   technologies: ["React", "Firebase", "GCP Cloud Run", "Tailwind CSS"],
+    //   liveDemo: "https://cloud-chat-demo.netlify.app",
+    //   sourceCode: true,
+    //   github: "https://github.com/emperorbj/cloud-chat"
+    // },
+    // {
+    //   id: 11,
+    //   title: "AI Document Processor",
+    //   type: "Cloud",
+    //   image: "https://source.unsplash.com/600x400/?ai,documents",
+    //   description: "A cloud-hosted AI app that extracts, processes, and summarizes documents using OpenAI APIs.",
+    //   technologies: ["FastAPI", "OpenAI", "Google Cloud Functions", "MongoDB"],
+    //   liveDemo: "https://ai-docs-demo.netlify.app",
+    //   sourceCode: true,
+    //   github: "https://github.com/emperorbj/ai-docs"
+    // },
+    // {
+    //   id: 12,
+    //   title: "Cloud Monitoring Dashboard",
+    //   type: "Cloud",
+    //   image: "https://source.unsplash.com/600x400/?dashboard,cloud",
+    //   description: "A monitoring dashboard for tracking cloud infrastructure usage, costs, and performance metrics.",
+    //   technologies: ["Vue.js", "Express", "Grafana", "AWS CloudWatch", "Docker"],
+    //   liveDemo: "https://cloud-monitor-demo.netlify.app",
+    //   sourceCode: true,
+    //   github: "https://github.com/emperorbj/cloud-monitor"
+    // },
     {
       id: 4,
       title: "Renergy App",
