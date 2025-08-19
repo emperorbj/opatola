@@ -1,0 +1,32 @@
+# Ignore node_modules (large and unnecessary in container)
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Ignore build outputs (you usually rebuild inside Docker)
+dist
+build
+.next
+out
+
+# Ignore local environment files
+.env
+.env.* 
+!.env.example   # keep example env files
+
+# Ignore version control files
+.git
+.gitignore
+
+# Ignore Docker-related files
+Dockerfile*
+.dockerignore
+
+# Ignore OS/system files
+.DS_Store
+Thumbs.db
+
+# Ignore editor/project configs
+.vscode
+.idea
+*.swp
