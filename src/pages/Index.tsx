@@ -157,17 +157,17 @@ const Portfolio = () => {
       sourceCode: true,
       github: "https://github.com/emperorbj/fresh-fable-forge"
     },
-    // {
-    //   id: 9,
-    //   title: "Serverless Notes App",
-    //   type: "Cloud",
-    //   image: "https://source.unsplash.com/600x400/?serverless,notes",
-    //   description: "A serverless notes app built with AWS Lambda, API Gateway, and DynamoDB with secure authentication.",
-    //   technologies: ["Next.js", "AWS Lambda", "DynamoDB", "Cognito"],
-    //   liveDemo: "https://serverless-notes-demo.netlify.app",
-    //   sourceCode: true,
-    //   github: "https://github.com/emperorbj/serverless-notes"
-    // },
+    {
+      id: 9,
+      title: "Deploy Static Coffee Site",
+      type: "Cloud",
+      image: "https://source.unsplash.com/600x400/?coffee,shop",
+      description: "Deployed static react app with AWS S3 bucket,cloudfront and github actions ci/cd.",
+      technologies: ["React.js", "AWS S3", "CloudFront", "GitHub Actions"],
+      liveDemo: "https://www.loom.com/share/b054a371b5464d87968777374213876f",
+      sourceCode: true,
+      github: "https://github.com/emperorbj/coffee-crafter-web"
+    },
     // {
     //   id: 10,
     //   title: "Realtime Chat Cloud",
