@@ -252,7 +252,7 @@ const Portfolio = () => {
     "Mobile": ["React Native"],
     "Databases": ["MongoDB", "PostgreSQL", "MySQL", "Redis",],
     "Tools": ["Git", "Docker", "Postman", "Figma", "click-up", "Slack"],
-    "Cloud": ["Google Cloud Platform"],
+    "Cloud": ["Google Cloud Platform","AWS"],
     "AI and Frameworks": ["LangChain","Langgraph","OpenAI","Gemini AI","FAISS"],
   };
 
