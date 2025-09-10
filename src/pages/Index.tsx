@@ -122,7 +122,7 @@ const Portfolio = () => {
       type: "Web App",
       image: "https://res.cloudinary.com/dpp46k83h/image/upload/v1753113462/Screenshot_2025-07-21_143627_tfj18l.png",
       description: "An Edtech platform that guides user to choose a career, provides learning paths, assess them and even have a job application feature.",
-      technologies: ["Nextjs", "Node.js", "MongoDB", "flutterwave", "ShadcnUI", "Tailwind CSS","React Query"],
+      technologies: ["Nextjs", "FastApi", "MongoDB", "ShadcnUI", "Tailwind CSS","React Query"],
       liveDemo: "https://opexa.app/",
       sourceCode: false
     },
@@ -228,7 +228,7 @@ const Portfolio = () => {
       type: "Mobile App",
       image: "https://res.cloudinary.com/dpp46k83h/image/upload/v1753114575/Image_fx_2_k2cbih.png",
       description: "An Apologetics app.",
-      technologies: ["ReactNative", "Nodejs", "MongoDB","React Query","Gemini AI"],
+      technologies: ["ReactNative", "FastApi", "MongoDB","React Query","Gemini AI"],
        apkDownload: "https://drive.google.com/file/d/1gF8ON-I7wDbG_TUo_ZMm6FAnBudWPyeK/view?usp=sharing",
       sourceCode: true
     },
