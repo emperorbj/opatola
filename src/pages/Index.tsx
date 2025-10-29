@@ -168,17 +168,17 @@ const Portfolio = () => {
       sourceCode: true,
       github: "https://github.com/emperorbj/coffee-crafter-web"
     },
-    // {
-    //   id: 10,
-    //   title: "Realtime Chat Cloud",
-    //   type: "Cloud",
-    //   image: "https://source.unsplash.com/600x400/?chat,cloud",
-    //   description: "A real-time chat app deployed on Google Cloud Run with Firebase authentication and Firestore database.",
-    //   technologies: ["React", "Firebase", "GCP Cloud Run", "Tailwind CSS"],
-    //   liveDemo: "https://cloud-chat-demo.netlify.app",
-    //   sourceCode: true,
-    //   github: "https://github.com/emperorbj/cloud-chat"
-    // },
+     {
+      id: 10,
+      title: "Setting up a CI/CD Pipeline for a MERN Stack Notes App",
+      type: "Cloud",
+      image: "/diagram.png",
+      description: "A comprehensive guide on setting up a CI/CD pipeline for a MERN stack application using GitHub Actions and AWS EC2.",
+      technologies: ["React", "Nodejs", "AWS EC2", "Tailwind CSS","MongoDB","GitHub Actions","Docker"],
+      liveDemo: "https://www.loom.com/share/897f49af1b274e3fba6921c842d0653b",
+      sourceCode: true,
+      github: "https://github.com/emperorbj/notify"
+    },
     // {
     //   id: 11,
     //   title: "AI Document Processor",
