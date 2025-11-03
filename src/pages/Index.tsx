@@ -190,17 +190,17 @@ const Portfolio = () => {
       sourceCode: false,
       // github: "https://github.com/emperorbj/ai-docs"
     },
-    // {
-    //   id: 12,
-    //   title: "Cloud Monitoring Dashboard",
-    //   type: "Cloud",
-    //   image: "https://source.unsplash.com/600x400/?dashboard,cloud",
-    //   description: "A monitoring dashboard for tracking cloud infrastructure usage, costs, and performance metrics.",
-    //   technologies: ["Vue.js", "Express", "Grafana", "AWS CloudWatch", "Docker"],
-    //   liveDemo: "https://cloud-monitor-demo.netlify.app",
-    //   sourceCode: true,
-    //   github: "https://github.com/emperorbj/cloud-monitor"
-    // },
+    {
+      id: 12,
+      title: "Soloa AI",
+      type: "Web App",
+      image: "/soloai.jpg",
+      description: "An AI-powered platform that offers a suite of tools and services to help businesses and individuals leverage artificial intelligence for various applications, including content generation, data analysis, and automation.",
+      technologies: ["Next.js", "Express", "MongoDB", "OpenAI","Langgraph","Tailwind CSS"],
+      liveDemo: "https://www.soloa.ai/?ref=producthunt",
+      sourceCode: false,
+      // github: "https://github.com/emperorbj/cloud-monitor"
+    },
     {
       id: 4,
       title: "Renergy App",
