@@ -179,17 +179,17 @@ const Portfolio = () => {
       sourceCode: true,
       github: "https://github.com/emperorbj/notify"
     },
-    // {
-    //   id: 11,
-    //   title: "AI Document Processor",
-    //   type: "Cloud",
-    //   image: "https://source.unsplash.com/600x400/?ai,documents",
-    //   description: "A cloud-hosted AI app that extracts, processes, and summarizes documents using OpenAI APIs.",
-    //   technologies: ["FastAPI", "OpenAI", "Google Cloud Functions", "MongoDB"],
-    //   liveDemo: "https://ai-docs-demo.netlify.app",
-    //   sourceCode: true,
-    //   github: "https://github.com/emperorbj/ai-docs"
-    // },
+    {
+      id: 11,
+      title: "Doctools",
+      type: "Web App",
+      image: "/doctools.jpg",
+      description: "An all in one platform document conversion and other file conversions",
+      technologies: ["FastAPI", "OpenAI", "AWS", "MongoDB","supabase","Nextjs","Tailwind CSS"],
+      liveDemo: "https://www.doctools.io/",
+      sourceCode: false,
+      // github: "https://github.com/emperorbj/ai-docs"
+    },
     // {
     //   id: 12,
     //   title: "Cloud Monitoring Dashboard",
