@@ -213,7 +213,7 @@ const Portfolio = () => {
     },
       {
       id: 5,
-      title: "Botydoc AI",
+      title: "Botdoc AI",
       type: "Mobile App",
       image: "https://res.cloudinary.com/dpp46k83h/image/upload/v1753114570/Image_fx_1_jchfhx.png",
       description: "A RAG AI Agent that takes documents and allows user to interact with it.",
