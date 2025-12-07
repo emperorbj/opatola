@@ -116,71 +116,8 @@ const Portfolio = () => {
   };
 
   const projects:any = [
-    {
+        {
       id: 1,
-      title: "OpexA App Platform",
-      type: "Web App",
-      image: "https://res.cloudinary.com/dpp46k83h/image/upload/v1753113462/Screenshot_2025-07-21_143627_tfj18l.png",
-      description: "An Edtech platform that guides user to choose a career, provides learning paths, assess them and even have a job application feature.",
-      technologies: ["Nextjs", "FastApi", "MongoDB", "ShadcnUI", "Tailwind CSS","React Query"],
-      liveDemo: "https://opexa.app/",
-      sourceCode: false
-    },
-    {
-      id: 2,
-      title: "OpexA Affiliate App",
-      type: "Web App",
-      image: "https://res.cloudinary.com/dpp46k83h/image/upload/v1753113892/Screenshot_2025-07-21_170427_yucbes.png",
-      description: "A platform that allows users to earn money by promoting products and services through affiliate marketing. Users can track their earnings, manage campaigns, and access marketing resources.",
-      technologies: ["Nextjs", "Node.js", "MongoDB", "flutterwave", "ShadcnUI", "Tailwind CSS","React Query"],
-      liveDemo: "https://affiliate.opexa.app/dashboard",
-      sourceCode: false
-    },
-    {
-      id: 3,
-      title: "Opexa Corporate App",
-      type: "Web App",
-      image: "https://res.cloudinary.com/dpp46k83h/image/upload/v1753113913/Screenshot_2025-07-21_170236_rsfqtv.png",
-      description: "A part of the OpexA ecosystem that provides a robust plafform for managing corporate training programs, job application listings,.",
-      technologies: ["Nextjs", "Node.js", "MongoDB", "flutterwave", "ShadcnUI", "Tailwind CSS","React Query"],
-      liveDemo: "https://corporate.opexa.app/auth/signup",
-      sourceCode: false
-    },
-     {
-      id: 8,
-      title: "Blog Deployment",
-      type: "Cloud",
-      image: "/blog.jpg",
-      description: "Deployment of a React Web app with Docker and AWS EC2 instance.",
-      technologies: ["React", "AWS EC2", "Docker",],
-      liveDemo: "https://www.loom.com/share/54cae3d026ee4cdba301550d39cea550?sid=6eb369be-3f63-44f5-a5ed-ea7caf72e719",
-      sourceCode: true,
-      github: "https://github.com/emperorbj/fresh-fable-forge"
-    },
-    {
-      id: 9,
-      title: "Deploy Static Coffee Site",
-      type: "Cloud",
-      image: "/ci.jpg",
-      description: "Deployed static react app with AWS S3 bucket,cloudfront and github actions ci/cd.",
-      technologies: ["React.js", "AWS S3", "CloudFront", "GitHub Actions"],
-      liveDemo: "https://www.loom.com/share/b054a371b5464d87968777374213876f",
-      sourceCode: true,
-      github: "https://github.com/emperorbj/coffee-crafter-web"
-    },
-     {
-      id: 10,
-      title: "Setting up a CI/CD Pipeline for a MERN Stack Notes App",
-      type: "Cloud",
-      image: "/diagram.png",
-      description: "A comprehensive guide on setting up a CI/CD pipeline for a MERN stack application using GitHub Actions and AWS EC2.",
-      technologies: ["React", "Nodejs", "AWS EC2", "Tailwind CSS","MongoDB","GitHub Actions","Docker"],
-      liveDemo: "https://www.loom.com/share/897f49af1b274e3fba6921c842d0653b",
-      sourceCode: true,
-      github: "https://github.com/emperorbj/notify"
-    },
-    {
-      id: 11,
       title: "Doctools",
       type: "Web App",
       image: "/doctools.jpg",
@@ -191,7 +128,7 @@ const Portfolio = () => {
       // github: "https://github.com/emperorbj/ai-docs"
     },
     {
-      id: 12,
+      id: 2,
       title: "Soloa AI",
       type: "Web App",
       image: "/soloai.jpg",
@@ -202,7 +139,7 @@ const Portfolio = () => {
       // github: "https://github.com/emperorbj/cloud-monitor"
     },
     {
-      id: 4,
+      id: 3,
       title: "Renergy App",
       type: "Web App",
       image: "https://res.cloudinary.com/dpp46k83h/image/upload/v1753113446/Screenshot_2025-07-21_152845_fzn0zo.png",
@@ -211,8 +148,72 @@ const Portfolio = () => {
       liveDemo: "https://www.renergyhub.com.ng/",
       sourceCode: false
     },
-      {
+    {
+      id: 4,
+      title: "OpexA App Platform",
+      type: "Web App",
+      image: "https://res.cloudinary.com/dpp46k83h/image/upload/v1753113462/Screenshot_2025-07-21_143627_tfj18l.png",
+      description: "An Edtech platform that guides user to choose a career, provides learning paths, assess them and even have a job application feature.",
+      technologies: ["Nextjs", "FastApi", "MongoDB", "ShadcnUI", "Tailwind CSS","React Query"],
+      liveDemo: "https://opexa.app/",
+      sourceCode: false
+    },
+    {
       id: 5,
+      title: "OpexA Affiliate App",
+      type: "Web App",
+      image: "https://res.cloudinary.com/dpp46k83h/image/upload/v1753113892/Screenshot_2025-07-21_170427_yucbes.png",
+      description: "A platform that allows users to earn money by promoting products and services through affiliate marketing. Users can track their earnings, manage campaigns, and access marketing resources.",
+      technologies: ["Nextjs", "Node.js", "MongoDB", "flutterwave", "ShadcnUI", "Tailwind CSS","React Query"],
+      liveDemo: "https://affiliate.opexa.app/dashboard",
+      sourceCode: false
+    },
+    {
+      id: 6,
+      title: "Opexa Corporate App",
+      type: "Web App",
+      image: "https://res.cloudinary.com/dpp46k83h/image/upload/v1753113913/Screenshot_2025-07-21_170236_rsfqtv.png",
+      description: "A part of the OpexA ecosystem that provides a robust plafform for managing corporate training programs, job application listings,.",
+      technologies: ["Nextjs", "Node.js", "MongoDB", "flutterwave", "ShadcnUI", "Tailwind CSS","React Query"],
+      liveDemo: "https://corporate.opexa.app/auth/signup",
+      sourceCode: false
+    },
+     {
+      id: 7,
+      title: "Blog Deployment",
+      type: "Cloud",
+      image: "/blog.jpg",
+      description: "Deployment of a React Web app with Docker and AWS EC2 instance.",
+      technologies: ["React", "AWS EC2", "Docker",],
+      liveDemo: "https://www.loom.com/share/54cae3d026ee4cdba301550d39cea550?sid=6eb369be-3f63-44f5-a5ed-ea7caf72e719",
+      sourceCode: true,
+      github: "https://github.com/emperorbj/fresh-fable-forge"
+    },
+    {
+      id: 8,
+      title: "Deploy Static Coffee Site",
+      type: "Cloud",
+      image: "/ci.jpg",
+      description: "Deployed static react app with AWS S3 bucket,cloudfront and github actions ci/cd.",
+      technologies: ["React.js", "AWS S3", "CloudFront", "GitHub Actions"],
+      liveDemo: "https://www.loom.com/share/b054a371b5464d87968777374213876f",
+      sourceCode: true,
+      github: "https://github.com/emperorbj/coffee-crafter-web"
+    },
+     {
+      id: 9,
+      title: "Setting up a CI/CD Pipeline for a MERN Stack Notes App",
+      type: "Cloud",
+      image: "/diagram.png",
+      description: "A comprehensive guide on setting up a CI/CD pipeline for a MERN stack application using GitHub Actions and AWS EC2.",
+      technologies: ["React", "Nodejs", "AWS EC2", "Tailwind CSS","MongoDB","GitHub Actions","Docker"],
+      liveDemo: "https://www.loom.com/share/897f49af1b274e3fba6921c842d0653b",
+      sourceCode: true,
+      github: "https://github.com/emperorbj/notify"
+    },
+
+      {
+      id: 10,
       title: "Botdoc AI",
       type: "Mobile App",
       image: "https://res.cloudinary.com/dpp46k83h/image/upload/v1753114570/Image_fx_1_jchfhx.png",
@@ -223,7 +224,7 @@ const Portfolio = () => {
       github: "https://github.com/emperorbj/botydoc"
     },
       {
-      id: 5,
+      id: 11,
       title: "Apologia App",
       type: "Mobile App",
       image: "https://res.cloudinary.com/dpp46k83h/image/upload/v1753114575/Image_fx_2_k2cbih.png",
@@ -233,7 +234,7 @@ const Portfolio = () => {
       sourceCode: true
     },
     {
-      id: 5,
+      id: 12,
       title: "Boodio App",
       type: "Mobile App",
       image: "https://res.cloudinary.com/dpp46k83h/image/upload/v1753114569/Image_fx_3_obye4r.png",
