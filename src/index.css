@@ -8,6 +8,15 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
+    /* Portfolio marketing surfaces (hero + about) — keep in sync in Tailwind classes */
+    --portfolio-canvas: 0 0% 96.5%;
+    --portfolio-surface: 0 0% 100%;
+    --portfolio-ink: 199 47% 10%;
+    --portfolio-muted: 220 9% 46%;
+    --portfolio-teal: 158 40% 30%;
+    --portfolio-gold: 45 88% 49%;
+    --portfolio-coral: 12 87% 54%;
+
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
@@ -101,5 +110,30 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Hero verified ring — plain CSS so animation always runs even if Tailwind rebuild lags */
+@layer utilities {
+  @keyframes hero-verified-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .hero-verified-spin {
+    animation: hero-verified-spin 22s linear infinite;
+  }
+
+  /* Featured projects: hide scrollbar on horizontal tab rail (mobile) */
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
   }
 }

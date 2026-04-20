@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useId, useMemo } from 'react';
 import { 
   Github, 
   Linkedin, 
@@ -7,24 +7,84 @@ import {
   ExternalLink, 
   Download, 
   Mail, 
-  Phone, 
-  MapPin, 
   Menu, 
   X,
-  ChevronDown,
   Code,
+  Monitor,
   Smartphone,
   Server,
   ArrowRight,
-  User,
-  Briefcase,
-  GraduationCap,
-  Star
+  ArrowUpRight,
+  ArrowDown,
+  BadgeCheck
 } from 'lucide-react';
+
+type ProjectCategory = 'all' | 'Web App' | 'Mobile App' | 'Cloud';
+
+/** Play / app-store style mark: play triangle in a rounded tile (inherits `currentColor`). */
+function PlayStoreIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
+      <rect
+        x="3.25"
+        y="3.25"
+        width="17.5"
+        height="17.5"
+        rx="4"
+        stroke="currentColor"
+        strokeWidth="1.5"
+      />
+      <path
+        fill="currentColor"
+        d="M10 8.25v7.5l5.25-3.75L10 8.25z"
+      />
+    </svg>
+  );
+}
+
+function isGooglePlayUrl(url: string) {
+  return /play\.google\.com/i.test(url) || /^market:\/\//i.test(url);
+}
+
+/** Pick Play Store vs APK from `playStoreUrl`, `apkDownload`, and `mobileListing`. */
+function resolveMobilePrimary(project: {
+  type?: string;
+  mobileListing?: 'apk' | 'playstore';
+  playStoreUrl?: string;
+  apkDownload?: string;
+}): { kind: 'play' | 'apk'; href: string } | null {
+  if (project.type !== 'Mobile App') return null;
+  const playUrl = project.playStoreUrl?.trim() || '';
+  const apkUrl = project.apkDownload?.trim() || '';
+  const listing = project.mobileListing;
+
+  if (listing === 'playstore') {
+    if (playUrl) return { kind: 'play', href: playUrl };
+    if (apkUrl && isGooglePlayUrl(apkUrl)) return { kind: 'play', href: apkUrl };
+    return null;
+  }
+  if (listing === 'apk') {
+    if (apkUrl && isGooglePlayUrl(apkUrl)) return { kind: 'play', href: apkUrl };
+    if (apkUrl) return { kind: 'apk', href: apkUrl };
+    if (playUrl) return { kind: 'play', href: playUrl };
+    return null;
+  }
+  if (playUrl) return { kind: 'play', href: playUrl };
+  if (apkUrl && isGooglePlayUrl(apkUrl)) return { kind: 'play', href: apkUrl };
+  if (apkUrl) return { kind: 'apk', href: apkUrl };
+  return null;
+}
 
 const Portfolio = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [projectFilter, setProjectFilter] = useState<ProjectCategory>('all');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -33,6 +93,13 @@ const Portfolio = () => {
   });
   const [formStatus, setFormStatus] = useState('');
   const [formErrors, setFormErrors] = useState({}) as any;
+
+  const heroPortraitUrl =
+    'https://res.cloudinary.com/dpp46k83h/image/upload/v1776696938/bolaji-01_f8fh3a.png';
+  const heroPortraitFallbackUrl =
+    'https://res.cloudinary.com/dpp46k83h/image/upload/v1753113423/DSC_3555_copy_2_cxynkl.jpg';
+  const heroRingPathId = `hero-verified-ring-${useId().replace(/:/g, '')}`;
+  const [heroImgSrc, setHeroImgSrc] = useState(heroPortraitUrl);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -214,12 +281,13 @@ const Portfolio = () => {
 
       {
       id: 10,
-      title: "Botdoc AI",
+      title: "Soloa AI",
       type: "Mobile App",
       image: "https://res.cloudinary.com/dpp46k83h/image/upload/v1753114570/Image_fx_1_jchfhx.png",
-      description: "A RAG AI Agent that takes documents and allows user to interact with it.",
+      description: "An all-in-one AI app for contentcreators. It does image,video,voice,charater generation and more",
       technologies: ["ReactNative", "FastApi", "MongoDB","React Query"],
-       apkDownload: "https://drive.google.com/file/d/1JyRpAXCSJJ8P9v5Cf9mQWuGN1YqG9MVg/view?usp=sharing",
+      mobileListing: 'playstore' as const,
+      playStoreUrl: "https://play.google.com/store/apps/details?id=com.soloaai.app&hl=en",
       sourceCode: true,
       github: "https://github.com/emperorbj/botydoc"
     },
@@ -228,21 +296,23 @@ const Portfolio = () => {
       title: "Apologia App",
       type: "Mobile App",
       image: "https://res.cloudinary.com/dpp46k83h/image/upload/v1753114575/Image_fx_2_k2cbih.png",
-      description: "An Apologetics app.",
+      description: "An Apologetics app. You can watch videos and download ebooks here",
       technologies: ["ReactNative", "FastApi", "MongoDB","React Query","Gemini AI"],
-       apkDownload: "https://drive.google.com/file/d/1gF8ON-I7wDbG_TUo_ZMm6FAnBudWPyeK/view?usp=sharing",
+      mobileListing: 'apk' as const,
+      apkDownload: "https://drive.google.com/file/d/19B9gEkx94NAV-XqDSveOXGbEXwmHS7zp/view?usp=sharing",
       sourceCode: true
     },
     {
       id: 12,
-      title: "Boodio App",
+      title: "Helixia App",
       type: "Mobile App",
       image: "https://res.cloudinary.com/dpp46k83h/image/upload/v1753114569/Image_fx_3_obye4r.png",
-      description: "An Apologetics app.",
+      description: "A mobile app for accessing lawyers and witha built-in response to emergency feature",
       technologies: ["ReactNative", "Supabase","React Query"],
-      apkDownload: "",
+      mobileListing: 'apk' as const,
+      apkDownload: "https://drive.google.com/file/d/1lrPBjYQinyDQM6PKZZtEhggey3QxrCBA/view?usp=sharing",
       sourceCode: true,
-      github: "https://github.com/emperorbj/boodio"
+      // github: "https://github.com/emperorbj/boodio"
     },
   ];
 
@@ -253,216 +323,592 @@ const Portfolio = () => {
     "Mobile": ["React Native"],
     "Databases": ["MongoDB", "PostgreSQL", "MySQL", "Redis",],
     "Tools": ["Git", "Docker", "Postman", "Figma", "click-up", "Slack"],
-    "Cloud": ["Google Cloud Platform","AWS"],
+    "Cloud": ["Google Cloud Platform","AWS","K8","Terraform","Githun Actions"],
     "AI and Frameworks": ["LangChain","Langgraph","OpenAI","Gemini AI","FAISS"],
   };
+
+  const projectCount = projects.length;
+  const webProjectCount = projects.filter((p) => p.type === 'Web App').length;
+  const mobileProjectCount = projects.filter((p) => p.type === 'Mobile App').length;
+  const cloudProjectCount = projects.filter((p) => p.type === 'Cloud').length;
+
+  const aboutServices = [
+    {
+      title: 'Web platforms',
+      count: webProjectCount,
+      icon: Monitor,
+      accent: 'bg-[hsl(var(--portfolio-teal))]',
+    },
+    {
+      title: 'Mobile applications',
+      count: mobileProjectCount,
+      icon: Smartphone,
+      accent: 'bg-[hsl(var(--portfolio-gold))]',
+    },
+    {
+      title: 'Cloud & DevOps',
+      count: cloudProjectCount,
+      icon: Server,
+      accent: 'bg-[hsl(var(--portfolio-coral))]',
+    },
+  ] as const;
+
+  const filteredProjects = useMemo(() => {
+    if (projectFilter === 'all') return projects;
+    return projects.filter((p) => p.type === projectFilter);
+  }, [projectFilter, projects]);
+
+  const projectTabCounts = useMemo(
+    () => ({
+      all: projects.length,
+      'Web App': projects.filter((p) => p.type === 'Web App').length,
+      'Mobile App': projects.filter((p) => p.type === 'Mobile App').length,
+      Cloud: projects.filter((p) => p.type === 'Cloud').length,
+    }),
+    [projects]
+  );
+
+  const projectTabs: { id: ProjectCategory; label: string }[] = [
+    { id: 'all', label: 'All' },
+    { id: 'Web App', label: 'Web' },
+    { id: 'Mobile App', label: 'Mobile' },
+    { id: 'Cloud', label: 'Cloud' },
+  ];
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       {/* Navigation */}
-      <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-gray-900/95 backdrop-blur-sm shadow-lg' : 'bg-transparent'
-      }`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="text-xl font-bold text-blue-400">Bolaji Opatola</div>
-            
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex space-x-8">
-              {['Home', 'About', 'Projects', 'Skills', 'Contact'].map((item) => (
+      <nav
+        className={`fixed top-0 z-50 w-full transition-all duration-300 ${
+          isScrolled
+            ? 'border-b border-white/10 bg-gray-900/95 text-white shadow-lg backdrop-blur-sm'
+            : 'border-b border-neutral-200/60 bg-[hsl(var(--portfolio-canvas))]/90 text-[hsl(var(--portfolio-ink))] backdrop-blur-sm'
+        }`}
+      >
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex h-16 items-center justify-between md:h-20">
+            <button
+              type="button"
+              onClick={() => smoothScroll('home')}
+              className={`flex items-center gap-3 rounded-md transition-opacity hover:opacity-80 ${
+                isScrolled ? 'text-white' : 'text-neutral-900'
+              }`}
+              aria-label="Go to top"
+            >
+              <span
+                className={`flex h-9 w-9 items-center justify-center rounded-md border text-[11px] font-bold tracking-tight ${
+                  isScrolled
+                    ? 'border-white/20 bg-white/5'
+                    : 'border-neutral-300 bg-white'
+                }`}
+              >
+                BO
+              </span>
+              <span className="hidden text-sm font-semibold tracking-tight sm:inline">
+                Bolaji Opatola
+              </span>
+            </button>
+
+            <div className="absolute left-1/2 hidden -translate-x-1/2 md:flex md:items-center md:gap-10">
+              {[
+                { label: 'About Me', id: 'about' },
+                { label: 'Portfolio', id: 'projects' },
+                { label: 'Skills', id: 'skills' },
+                { label: 'Contact', id: 'contact' },
+              ].map((item) => (
                 <button
-                  key={item}
-                  onClick={() => smoothScroll(item.toLowerCase())}
-                  className="hover:text-blue-400 transition-colors duration-300"
+                  key={item.id}
+                  type="button"
+                  onClick={() => smoothScroll(item.id)}
+                  className={`text-sm font-medium transition-colors ${
+                    isScrolled
+                      ? 'text-neutral-300 hover:text-white'
+                      : 'text-neutral-600 hover:text-neutral-900'
+                  }`}
                 >
-                  {item}
+                  {item.label}
                 </button>
               ))}
             </div>
 
-            {/* Mobile Menu Button */}
-            <button
-              className="md:hidden"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => smoothScroll('contact')}
+                className={`hidden items-center gap-1.5 text-sm font-semibold transition-colors sm:inline-flex ${
+                  isScrolled
+                    ? 'text-white hover:text-blue-300'
+                    : 'text-neutral-900 hover:text-neutral-600'
+                }`}
+              >
+                Get in touch
+                <ArrowUpRight className="h-4 w-4" strokeWidth={2} />
+              </button>
+
+              <button
+                type="button"
+                className="md:hidden"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+              >
+                {isMenuOpen ? (
+                  <X className={`h-6 w-6 ${isScrolled ? 'text-white' : 'text-neutral-900'}`} />
+                ) : (
+                  <Menu className={`h-6 w-6 ${isScrolled ? 'text-white' : 'text-neutral-900'}`} />
+                )}
+              </button>
+            </div>
           </div>
 
-          {/* Mobile Navigation */}
           {isMenuOpen && (
-            <div className="md:hidden bg-gray-800 rounded-lg mt-2 py-4">
-              {['Home', 'About', 'Projects', 'Skills', 'Contact'].map((item) => (
+            <div
+              className={`md:hidden ${
+                isScrolled
+                  ? 'mt-2 rounded-lg border border-white/10 bg-gray-800 py-3'
+                  : 'mt-2 rounded-lg border border-neutral-200 bg-white py-3 shadow-sm'
+              }`}
+            >
+              {[
+                { label: 'About Me', id: 'about' },
+                { label: 'Portfolio', id: 'projects' },
+                { label: 'Skills', id: 'skills' },
+                { label: 'Contact', id: 'contact' },
+              ].map((item) => (
                 <button
-                  key={item}
-                  onClick={() => smoothScroll(item.toLowerCase())}
-                  className="block w-full text-left px-4 py-2 hover:bg-gray-700 transition-colors"
+                  key={item.id}
+                  type="button"
+                  onClick={() => smoothScroll(item.id)}
+                  className={`block w-full px-4 py-2.5 text-left text-sm font-medium transition-colors ${
+                    isScrolled
+                      ? 'hover:bg-gray-700/80'
+                      : 'hover:bg-neutral-100'
+                  }`}
                 >
-                  {item}
+                  {item.label}
                 </button>
               ))}
+              <button
+                type="button"
+                onClick={() => smoothScroll('contact')}
+                className={`mt-1 flex w-full items-center justify-between px-4 py-2.5 text-left text-sm font-semibold ${
+                  isScrolled ? 'text-blue-300' : 'text-neutral-900'
+                }`}
+              >
+                Get in touch
+                <ArrowUpRight className="h-4 w-4" />
+              </button>
             </div>
           )}
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section id="home" className="min-h-screen flex items-center justify-center relative">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 to-purple-900/20"></div>
-        <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-            Bolaji Opatola
-          </h1>
-          <h2 className="text-2xl md:text-3xl text-gray-300 mb-6">
-            Full-Stack (Web/Mobile) & AI Solutions Developer
-          </h2>
-          <p className="text-lg text-gray-400 mb-8 max-w-2xl mx-auto">
-            Crafting digital experiences that bridge creativity and technology. 
-            Specializing in web applications, mobile and AI solutions, and scalable APIs.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              onClick={() => smoothScroll('projects')}
-              className="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+      {/* Hero Section — editorial light monochrome (reference layout) */}
+      <section
+        id="home"
+        className="relative min-h-screen bg-[hsl(var(--portfolio-canvas))] text-[hsl(var(--portfolio-ink))] antialiased"
+      >
+        <div className="mx-auto flex min-h-screen max-w-[1600px]">
+          <aside className="relative hidden w-14 shrink-0 flex-col items-center justify-between border-r border-neutral-200 py-10 lg:flex">
+            <span
+              className="text-[10px] font-medium uppercase tracking-[0.28em] text-neutral-400"
+              style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
             >
-              View My Work <ArrowRight className="h-5 w-5" />
-            </button>
-            <button
-              onClick={() => smoothScroll('contact')}
-              className="border border-gray-600 hover:border-blue-400 px-8 py-3 rounded-lg font-medium transition-colors"
+              Full-Stack Engineer
+            </span>
+            <span
+              className="text-[10px] font-medium uppercase tracking-[0.2em] text-neutral-400"
+              style={{ writingMode: 'vertical-rl' }}
             >
-              Get In Touch
-            </button>
-          </div>
-        </div>
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <ChevronDown className="h-6 w-6 text-gray-400" />
-        </div>
-      </section>
+              2026
+            </span>
+          </aside>
 
-      {/* About Section */}
-      <section id="about" className="py-20 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="order-2 md:order-1">
-              <h2 className="text-4xl font-bold mb-6 text-blue-400">About Me</h2>
-              <div className="space-y-4 text-gray-300">
-                <p>
-                  Welcome! I'm Bolaji, a passionate full-stack developer with over 3 years of experience 
-                  creating innovative digital solutions. My journey began with a fascination for how 
-                  code can transform ideas into reality, and that curiosity continues to drive me today.
-                </p>
-                <p>
-                  I specialize in building scalable web applications, intuitive mobile and AI apps, and robust 
-                  APIs that power modern businesses. From startups to enterprise clients, I've helped 
-                  organizations leverage technology to achieve their goals and create meaningful user experiences.
-                </p>
-                <p>
-                  When I'm not coding, you'll find me exploring the latest tech trends, contributing to 
-                  open-source projects, or mentoring aspiring developers. I believe in the power of 
-                  technology to solve real-world problems and make a positive impact.
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-4 mt-6">
-                <div className="flex items-center gap-2 text-blue-400">
-                  <Briefcase className="h-5 w-5" />
-                  <span>3+ Years Experience</span>
+          <div className="grid min-h-screen flex-1 grid-cols-1 lg:grid-cols-[minmax(0,1.12fr)_minmax(280px,460px)]">
+            <div className="order-2 flex flex-col justify-between px-4 pb-10 pt-12 sm:px-8 sm:pt-16 lg:order-none lg:max-w-none lg:px-12 lg:pt-28 xl:px-14 xl:pt-32">
+              <div className="flex flex-wrap gap-x-10 gap-y-8 sm:gap-x-14 sm:gap-x-20">
+                <div>
+                  <p className="text-4xl font-light tabular-nums tracking-tight text-[hsl(var(--portfolio-ink))] sm:text-5xl md:text-6xl">
+                    +{projectCount}
+                  </p>
+                  <p className="mt-1 max-w-[10rem] text-sm leading-snug text-[hsl(var(--portfolio-muted))]">
+                    Projects completed
+                  </p>
                 </div>
-                <div className="flex items-center gap-2 text-blue-400">
-                  <Star className="h-5 w-5" />
-                  <span>10+ Projects Completed</span>
+                <div>
+                  <p className="text-4xl font-light tabular-nums tracking-tight text-[hsl(var(--portfolio-ink))] sm:text-5xl md:text-6xl">
+                    4+
+                  </p>
+                  <p className="mt-1 max-w-[10rem] text-sm leading-snug text-[hsl(var(--portfolio-muted))]">
+                    Years experience
+                  </p>
                 </div>
               </div>
+
+              <div className="my-10 lg:my-0">
+                <h1 className="text-[clamp(3.75rem,12vw,10rem)] font-bold leading-[0.92] tracking-tight text-[hsl(var(--portfolio-ink))] sm:text-[clamp(4.5rem,14vw,10rem)]">
+                  Hello
+                </h1>
+                <p className="mt-5 max-w-xl text-base leading-relaxed text-[hsl(var(--portfolio-muted))] sm:mt-6 sm:text-lg">
+                  <span className="text-[hsl(var(--portfolio-ink))]">—</span> I&apos;m{' '}
+                  <span className="font-medium text-[hsl(var(--portfolio-ink))]">Bolaji Opatola</span>, a{' '}
+                  Full-Stack (Web/Mobile) &amp; AI Solutions Developer. I craft digital experiences
+                  that bridge creativity and technology—web applications, mobile and AI solutions,
+                  and scalable APIs.
+                </p>
+                <div className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:flex-wrap sm:gap-4">
+                  <button
+                    type="button"
+                    onClick={() => smoothScroll('projects')}
+                    className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-2 rounded-full bg-[hsl(var(--portfolio-ink))] px-7 py-3 text-sm font-semibold text-[hsl(var(--portfolio-canvas))] transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
+                  >
+                    View portfolio
+                    <ArrowRight className="h-4 w-4" strokeWidth={2} />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => smoothScroll('contact')}
+                    className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-2 rounded-full border border-neutral-300 bg-transparent px-7 py-3 text-sm font-semibold text-[hsl(var(--portfolio-ink))] transition-colors hover:border-[hsl(var(--portfolio-ink))] active:scale-[0.98]"
+                  >
+                    Get in touch
+                  </button>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => smoothScroll('about')}
+                className="group flex w-fit min-h-[44px] items-center gap-2 text-sm font-medium text-[hsl(var(--portfolio-muted))] transition-colors hover:text-[hsl(var(--portfolio-ink))]"
+              >
+                Scroll down
+                <ArrowDown className="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
+              </button>
             </div>
-            <div className="order-1 md:order-2">
-              <div className="relative">
+
+            <div className="relative order-1 flex min-h-[38vh] items-center justify-center bg-[hsl(var(--portfolio-canvas))] px-4 pb-8 pt-20 sm:min-h-[42vh] sm:pt-24 lg:order-none lg:min-h-screen lg:px-6 lg:pb-0 lg:pt-0">
+              <div className="relative flex w-full max-w-[min(420px,92vw)] flex-col items-center justify-center lg:max-w-[min(440px,36vw)]">
+                <div
+                  className="pointer-events-none absolute -right-1 top-[2%] z-10 h-[7.25rem] w-[7.25rem] sm:h-[8rem] sm:w-[8rem] sm:top-[6%] lg:right-[-0.5rem] lg:top-[10%]"
+                  aria-hidden
+                >
+                  <svg
+                    className="hero-verified-spin h-full w-full overflow-visible text-neutral-600"
+                    viewBox="0 0 100 100"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <defs>
+                      <path
+                        id={heroRingPathId}
+                        d="M 50,50 m -38,0 a 38,38 0 1 1 76,0 a 38,38 0 1 1 -76,0"
+                        fill="none"
+                      />
+                    </defs>
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="38"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeOpacity="0.2"
+                      strokeWidth="0.35"
+                    />
+                    <text
+                      fill="currentColor"
+                      className="select-none font-semibold uppercase [font-size:6.25px] tracking-[0.2em]"
+                    >
+                      <textPath href={`#${heroRingPathId}`} startOffset="0%">
+                        Verified · Full-Stack · Web &amp; Mobile · AI · 4+ yrs · Open to work ·
+                        Verified · Full-Stack ·
+                      </textPath>
+                    </text>
+                  </svg>
+                  <div className="absolute left-1/2 top-1/2 flex h-[2.65rem] w-[2.65rem] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-[2.5px] border-[hsl(var(--portfolio-ink))] bg-[hsl(var(--portfolio-canvas))] shadow-sm">
+                    <BadgeCheck
+                      className="h-[1.15rem] w-[1.15rem] text-[hsl(var(--portfolio-ink))]"
+                      strokeWidth={2.25}
+                      aria-hidden
+                    />
+                  </div>
+                </div>
+
                 <img
-                  src="https://res.cloudinary.com/dpp46k83h/image/upload/v1753113423/DSC_3555_copy_2_cxynkl.jpg"
+                  src={heroImgSrc}
                   alt="Bolaji Opatola"
-                  className="rounded-lg shadow-2xl w-full max-w-md mx-auto"
+                  width={800}
+                  height={1000}
+                  loading="eager"
+                  decoding="async"
+                  onError={() => setHeroImgSrc((s) => (s === heroPortraitFallbackUrl ? s : heroPortraitFallbackUrl))}
+                  className="mx-auto max-h-[min(52vh,520px)] w-full object-contain object-center drop-shadow-sm sm:max-h-[min(58vh,560px)] lg:max-h-[min(78vh,760px)]"
                 />
-                <div className="absolute inset-0 rounded-lg bg-gradient-to-tr from-blue-600/20 to-purple-600/20"></div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Projects Section */}
-      <section id="projects" className="py-20 px-4 bg-gray-800/50">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-12 text-blue-400">Featured Projects</h2>
-          <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-8">
-            {projects.map((project:any) => (
-              <div key={project.id} className="bg-gray-800 rounded-lg overflow-hidden shadow-xl hover:shadow-2xl transition-shadow">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-xl font-bold">{project.title}</h3>
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      project.type === 'Web App' ? 'bg-blue-600' :
-                      project.type === 'Mobile App' ? 'bg-green-600' : 'bg-purple-600'
-                    }`}>
-                      {project.type === 'Web App' && <Code className="inline h-3 w-3 mr-1" />}
-                      {project.type === 'Mobile App' && <Smartphone className="inline h-3 w-3 mr-1" />}
-                      {project.type === 'API' && <Server className="inline h-3 w-3 mr-1" />}
-                      {project.type}
-                    </span>
+      {/* About Section — services + story (light marketing layout) */}
+      <section
+        id="about"
+        className="bg-[hsl(var(--portfolio-surface))] px-4 py-16 text-[hsl(var(--portfolio-ink))] sm:px-6 sm:py-20 lg:px-8 lg:py-24"
+      >
+        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:gap-16 xl:max-w-7xl">
+          <div className="order-2 flex flex-col gap-5 lg:order-1 lg:gap-6">
+            {aboutServices.map((item) => {
+              const Icon = item.icon;
+              return (
+                <div
+                  key={item.title}
+                  className="flex items-center gap-4 rounded-2xl bg-[hsl(var(--portfolio-surface))] p-5 shadow-[0_8px_30px_rgba(7,30,38,0.07)] ring-1 ring-neutral-200/80 sm:gap-5 sm:p-6"
+                >
+                  <div
+                    className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-full sm:h-16 sm:w-16 ${item.accent}`}
+                  >
+                    <Icon className="h-6 w-6 text-white sm:h-7 sm:w-7" strokeWidth={1.75} aria-hidden />
                   </div>
-                  <p className="text-gray-300 mb-4">{project.description}</p>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.technologies.map((tech:any) => (
-                      <span key={tech} className="bg-gray-700 px-2 py-1 rounded text-xs">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="flex gap-3">
-                    {project.type === 'Mobile App' ? (
-                      <>
-                        <a
-                          href={project.apkDownload}
-                          className="flex-1 text-sm bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg text-center transition-colors flex items-center justify-center gap-2"
-                        >
-                          <Download className="h-4 w-4" />
-                          Download APK
-                        </a>
-                        {project.sourceCode && <a
-                          href={project?.github}
-                          className={`flex flex-1 border text-sm border-gray-600 hover:border-blue-400 px-4 py-2 rounded-lg text-center transition-colors  items-center justify-center gap-2`}
-                        >
-                          <Github className="h-4 w-4" />
-                          View Code
-                        </a>
-                        }
-                      </>
-                    ) : (
-                      <>
-                        <a
-                          href={project.liveDemo}
-                          className="flex-1 text-sm bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-center transition-colors flex items-center justify-center gap-2"
-                        >
-                          <ExternalLink className="h-4 w-4" />
-                          Live Demo
-                        </a>
-                        {project.sourceCode && <a
-                          href={project.github}
-                          className={`flex flex-1 text-sm border border-gray-600 hover:border-blue-400 px-4 py-2 rounded-lg text-center transition-colors  items-center justify-center gap-2`}
-                        >
-                          <Github className="h-4 w-4" />
-                          View Code
-                        </a>
-                        }
-                      </>
-                    )}
+                  <div className="min-w-0">
+                    <p className="text-base font-bold tracking-tight sm:text-lg">{item.title}</p>
+                    <p className="mt-0.5 text-sm text-[hsl(var(--portfolio-muted))]">
+                      {item.count} Projects
+                    </p>
                   </div>
                 </div>
+              );
+            })}
+          </div>
+
+          <div className="order-1 lg:order-2">
+            <h2 className="text-3xl font-bold leading-tight tracking-tight sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1]">
+              What do I help?
+            </h2>
+            <div className="mt-6 space-y-5 text-base leading-relaxed text-[hsl(var(--portfolio-muted))] sm:text-lg">
+              <p>
+                I&apos;m Bolaji, a full-stack engineer with 4+ years of experience shipping products end to
+                end. I care about clear UX, solid architecture, and delivery you can rely on—from first
+                prototype to production.
+              </p>
+              <p>
+                I build scalable web applications, polished mobile experiences, and AI-powered features
+                backed by robust APIs and cloud infrastructure. Whether you need a new product, a rewrite,
+                or DevOps and deployment support, I partner closely to turn goals into working software.
+              </p>
+            </div>
+            <div className="mt-10 grid grid-cols-2 gap-6 border-t border-neutral-200 pt-10 sm:mt-12 sm:gap-10 sm:pt-12">
+              <div>
+                <p className="text-3xl font-bold tabular-nums tracking-tight sm:text-4xl">
+                  {projectCount}+
+                </p>
+                <p className="mt-1 text-sm text-[hsl(var(--portfolio-muted))]">Projects completed</p>
               </div>
-            ))}
+              <div>
+                <p className="text-3xl font-bold tabular-nums tracking-tight sm:text-4xl">4+</p>
+                <p className="mt-1 text-sm text-[hsl(var(--portfolio-muted))]">Years experience</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Projects Section — light surface + narrower grid (matches hero / about) */}
+      <section
+        id="projects"
+        className="relative overflow-hidden border-t border-neutral-200/80 bg-[hsl(var(--portfolio-surface))] px-4 py-16 text-[hsl(var(--portfolio-ink))] sm:px-6 sm:py-20 lg:px-8 lg:py-24"
+      >
+        <div className="pointer-events-none absolute inset-0 opacity-70" aria-hidden>
+          <div className="absolute -left-20 top-10 h-64 w-64 rounded-full bg-[hsl(var(--portfolio-teal))]/10 blur-3xl" />
+          <div className="absolute -right-16 bottom-10 h-72 w-72 rounded-full bg-[hsl(var(--portfolio-coral))]/10 blur-3xl" />
+          <div className="absolute left-1/2 top-1/2 h-56 w-56 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[hsl(var(--portfolio-gold))]/8 blur-3xl" />
+        </div>
+
+        <div className="relative z-10 mx-auto w-full max-w-4xl xl:max-w-5xl">
+          <div className="mx-auto mb-10 max-w-xl text-center lg:mb-12">
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[hsl(var(--portfolio-muted))]">
+              Portfolio
+            </p>
+            <h2 className="mt-2 text-3xl font-bold tracking-tight text-[hsl(var(--portfolio-ink))] sm:text-4xl lg:text-[2.5rem]">
+              Featured projects
+            </h2>
+            <p className="mt-3 text-base text-[hsl(var(--portfolio-muted))] sm:text-lg">
+              Real builds across web, mobile, and cloud—same details, sharper presentation.
+            </p>
+          </div>
+
+          <div className="mb-10 flex justify-center sm:mb-12">
+            <div className="scrollbar-none -mx-1 w-full max-w-full overflow-x-auto px-1 sm:mx-0 sm:max-w-none sm:overflow-visible sm:px-0">
+              <div
+                className="inline-flex min-w-max items-center gap-1 rounded-full border border-neutral-200/90 bg-white/65 p-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_8px_30px_rgba(7,30,38,0.06)] backdrop-blur-xl ring-1 ring-black/[0.04] sm:gap-1.5 sm:p-2"
+                role="tablist"
+                aria-label="Filter projects by category"
+              >
+                {projectTabs.map((tab) => {
+                  const active = projectFilter === tab.id;
+                  const count = projectTabCounts[tab.id];
+                  return (
+                    <button
+                      key={tab.id}
+                      type="button"
+                      role="tab"
+                      aria-selected={active}
+                      onClick={() => setProjectFilter(tab.id)}
+                      className={`rounded-full px-4 py-2.5 text-sm font-semibold transition-all duration-300 sm:px-5 sm:py-3 ${
+                        active
+                          ? 'bg-[hsl(var(--portfolio-ink))] text-[hsl(var(--portfolio-surface))] shadow-md shadow-[hsl(var(--portfolio-ink))]/12'
+                          : 'text-[hsl(var(--portfolio-muted))] hover:bg-neutral-100/90 hover:text-[hsl(var(--portfolio-ink))]'
+                      }`}
+                    >
+                      <span className="whitespace-nowrap">{tab.label}</span>
+                      <span
+                        className={`ml-1.5 tabular-nums text-xs font-medium ${
+                          active ? 'text-white/75' : 'text-[hsl(var(--portfolio-muted))]/80'
+                        }`}
+                      >
+                        ({count})
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-7 xl:grid-cols-3 xl:gap-6">
+            {filteredProjects.length === 0 ? (
+              <p className="col-span-full rounded-2xl border border-neutral-200/90 bg-white/70 py-14 text-center text-sm text-[hsl(var(--portfolio-muted))] shadow-[0_8px_30px_rgba(7,30,38,0.06)] backdrop-blur-md sm:text-base">
+                No projects in this category yet.
+              </p>
+            ) : null}
+            {filteredProjects.map((project: any) => {
+              const mobilePrimary = resolveMobilePrimary(project);
+
+              const accent =
+                project.type === 'Web App'
+                  ? {
+                      badge:
+                        'bg-[hsl(var(--portfolio-teal))]/14 text-[hsl(var(--portfolio-teal))] ring-[hsl(var(--portfolio-teal))]/25',
+                      primary:
+                        'bg-[hsl(var(--portfolio-teal))] text-white hover:bg-[hsl(var(--portfolio-teal))]/88',
+                    }
+                  : project.type === 'Mobile App'
+                    ? {
+                        badge:
+                          'bg-[hsl(var(--portfolio-gold))]/18 text-amber-900/90 ring-[hsl(var(--portfolio-gold))]/35',
+                        primary:
+                          'bg-[hsl(var(--portfolio-gold))] text-[hsl(var(--portfolio-ink))] hover:bg-[hsl(var(--portfolio-gold))]/88',
+                      }
+                    : {
+                        badge:
+                          'bg-[hsl(var(--portfolio-coral))]/12 text-[hsl(var(--portfolio-coral))] ring-[hsl(var(--portfolio-coral))]/28',
+                        primary:
+                          'bg-[hsl(var(--portfolio-coral))] text-white hover:bg-[hsl(var(--portfolio-coral))]/88',
+                      };
+
+              return (
+                <article
+                  key={project.id}
+                  className="group relative mx-auto flex w-full max-w-md flex-col overflow-hidden rounded-[1.75rem] border border-neutral-200/90 bg-gradient-to-br from-white/75 to-white/45 shadow-[0_12px_40px_rgba(7,30,38,0.08)] backdrop-blur-2xl transition-all duration-300 hover:border-neutral-300 hover:from-white/90 hover:shadow-[0_20px_48px_rgba(7,30,38,0.12)] sm:mx-0 sm:max-w-none"
+                >
+                  <div className="p-3 sm:p-3.5">
+                    <div className="relative overflow-hidden rounded-2xl ring-1 ring-neutral-200/80">
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="h-44 w-full object-cover transition duration-500 ease-out group-hover:scale-[1.03] sm:h-48"
+                      />
+                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[hsl(var(--portfolio-ink))]/18 to-transparent opacity-90" />
+                    </div>
+                  </div>
+
+                  <div className="flex flex-1 flex-col px-4 pb-4 pt-0 sm:px-5 sm:pb-5">
+                    <div className="mb-3 flex flex-wrap items-start justify-between gap-2">
+                      <h3 className="text-lg font-bold leading-snug tracking-tight text-[hsl(var(--portfolio-ink))] sm:text-xl">
+                        {project.title}
+                      </h3>
+                      <span
+                        className={`inline-flex shrink-0 items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold ring-1 backdrop-blur-sm ${accent.badge}`}
+                      >
+                        {project.type === 'Web App' && (
+                          <Code className="h-3.5 w-3.5 opacity-90" aria-hidden />
+                        )}
+                        {project.type === 'Mobile App' && (
+                          <Smartphone className="h-3.5 w-3.5 opacity-90" aria-hidden />
+                        )}
+                        {project.type === 'Cloud' && (
+                          <Server className="h-3.5 w-3.5 opacity-90" aria-hidden />
+                        )}
+                        {project.type}
+                      </span>
+                    </div>
+                    <p className="mb-4 line-clamp-4 flex-1 text-sm leading-relaxed text-[hsl(var(--portfolio-muted))] sm:text-[0.9375rem]">
+                      {project.description}
+                    </p>
+                    <div className="mb-4 flex flex-wrap gap-2">
+                      {project.technologies.map((tech: any) => (
+                        <span
+                          key={tech}
+                          className="rounded-full border border-neutral-200/90 bg-white/70 px-3 py-1 text-[11px] font-medium text-[hsl(var(--portfolio-ink))]/85 backdrop-blur-sm sm:text-xs"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="mt-auto flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:gap-2">
+                      {project.type === 'Mobile App' ? (
+                        <>
+                          {mobilePrimary?.kind === 'play' ? (
+                            <a
+                              href={mobilePrimary.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={`inline-flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-full px-4 py-2.5 text-center text-sm font-semibold transition active:scale-[0.98] ${accent.primary}`}
+                            >
+                              <PlayStoreIcon className="h-4 w-4 shrink-0" />
+                              Play Store
+                            </a>
+                          ) : mobilePrimary?.kind === 'apk' ? (
+                            <a
+                              href={mobilePrimary.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={`inline-flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-full px-4 py-2.5 text-center text-sm font-semibold transition active:scale-[0.98] ${accent.primary}`}
+                            >
+                              <Download className="h-4 w-4 shrink-0" aria-hidden />
+                              APK
+                            </a>
+                          ) : null}
+                          {project.sourceCode && project.github ? (
+                            <a
+                              href={project.github}
+                              className="inline-flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-full border border-neutral-300/90 bg-white/60 px-4 py-2.5 text-center text-sm font-semibold text-[hsl(var(--portfolio-ink))] backdrop-blur-md transition hover:border-neutral-400 hover:bg-white/85 active:scale-[0.98]"
+                            >
+                              <Github className="h-4 w-4 shrink-0" aria-hidden />
+                              View Code
+                            </a>
+                          ) : null}
+                        </>
+                      ) : (
+                        <>
+                          <a
+                            href={project.liveDemo}
+                            className={`inline-flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-full px-4 py-2.5 text-center text-sm font-semibold transition active:scale-[0.98] ${accent.primary}`}
+                          >
+                            <ExternalLink className="h-4 w-4 shrink-0" aria-hidden />
+                            Live Demo
+                          </a>
+                          {project.sourceCode && project.github ? (
+                            <a
+                              href={project.github}
+                              className="inline-flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-full border border-neutral-300/90 bg-white/60 px-4 py-2.5 text-center text-sm font-semibold text-[hsl(var(--portfolio-ink))] backdrop-blur-md transition hover:border-neutral-400 hover:bg-white/85 active:scale-[0.98]"
+                            >
+                              <Github className="h-4 w-4 shrink-0" aria-hidden />
+                              View Code
+                            </a>
+                          ) : null}
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </div>
       </section>
