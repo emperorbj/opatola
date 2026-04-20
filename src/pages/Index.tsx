@@ -207,42 +207,12 @@ const Portfolio = () => {
     },
     {
       id: 3,
-      title: "Renergy App",
+      title: "Regwatch App",
       type: "Web App",
-      image: "https://res.cloudinary.com/dpp46k83h/image/upload/v1753113446/Screenshot_2025-07-21_152845_fzn0zo.png",
-      description: "A platform that provides users access to renewable energy solutions, including solar panel installations, energy efficiency tips, and a marketplace for eco-friendly products.",
+      image: "https://res.cloudinary.com/dpp46k83h/image/upload/v1753114570/Image_fx_1_jchfhx.png",
+      description: "A platform that offer real time regulatory compliance updates and notifications to users with a compliance intelligence system",
       technologies: ["Nextjs", "Node.js", "MongoDB", "flutterwave", "ShadcnUI", "Tailwind CSS","React Query"],
-      liveDemo: "https://www.renergyhub.com.ng/",
-      sourceCode: false
-    },
-    {
-      id: 4,
-      title: "OpexA App Platform",
-      type: "Web App",
-      image: "https://res.cloudinary.com/dpp46k83h/image/upload/v1753113462/Screenshot_2025-07-21_143627_tfj18l.png",
-      description: "An Edtech platform that guides user to choose a career, provides learning paths, assess them and even have a job application feature.",
-      technologies: ["Nextjs", "FastApi", "MongoDB", "ShadcnUI", "Tailwind CSS","React Query"],
-      liveDemo: "https://opexa.app/",
-      sourceCode: false
-    },
-    {
-      id: 5,
-      title: "OpexA Affiliate App",
-      type: "Web App",
-      image: "https://res.cloudinary.com/dpp46k83h/image/upload/v1753113892/Screenshot_2025-07-21_170427_yucbes.png",
-      description: "A platform that allows users to earn money by promoting products and services through affiliate marketing. Users can track their earnings, manage campaigns, and access marketing resources.",
-      technologies: ["Nextjs", "Node.js", "MongoDB", "flutterwave", "ShadcnUI", "Tailwind CSS","React Query"],
-      liveDemo: "https://affiliate.opexa.app/dashboard",
-      sourceCode: false
-    },
-    {
-      id: 6,
-      title: "Opexa Corporate App",
-      type: "Web App",
-      image: "https://res.cloudinary.com/dpp46k83h/image/upload/v1753113913/Screenshot_2025-07-21_170236_rsfqtv.png",
-      description: "A part of the OpexA ecosystem that provides a robust plafform for managing corporate training programs, job application listings,.",
-      technologies: ["Nextjs", "Node.js", "MongoDB", "flutterwave", "ShadcnUI", "Tailwind CSS","React Query"],
-      liveDemo: "https://corporate.opexa.app/auth/signup",
+      liveDemo: "https://www.regwatch.com.ng/",
       sourceCode: false
     },
      {
@@ -283,7 +253,7 @@ const Portfolio = () => {
       id: 10,
       title: "Soloa AI",
       type: "Mobile App",
-      image: "https://res.cloudinary.com/dpp46k83h/image/upload/v1753114570/Image_fx_1_jchfhx.png",
+      image: "/soloai.jpg",
       description: "An all-in-one AI app for contentcreators. It does image,video,voice,charater generation and more",
       technologies: ["ReactNative", "FastApi", "MongoDB","React Query"],
       mobileListing: 'playstore' as const,
