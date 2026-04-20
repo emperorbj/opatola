@@ -263,7 +263,7 @@ const Portfolio = () => {
     },
       {
       id: 11,
-      title: "Apologia App",
+      title: "Aletheia App",
       type: "Mobile App",
       image: "https://res.cloudinary.com/dpp46k83h/image/upload/v1753114575/Image_fx_2_k2cbih.png",
       description: "An Apologetics app. You can watch videos and download ebooks here",
