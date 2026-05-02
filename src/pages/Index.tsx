@@ -284,6 +284,18 @@ const Portfolio = () => {
       sourceCode: true,
       // github: "https://github.com/emperorbj/boodio"
     },
+    {
+      id: 13,
+      title: "Secure Server",
+      type: "Cloud",
+      image: "/hard.webp",
+      description: "Building a secure server and hardening its access with firewalls, fail2ban and other security measures",
+      technologies: ["Linux", "Bash","GCP Compute Engine"],
+      liveDemo: "https://server-crack.hashnode.dev/server-hardening-recovery-drill-on-gcp-from-setup-to-total-lockout-and-recovery",
+      sourceCode: false,
+      // github: "https://github.com/emperorbj/boodio"
+      blogLink: true,
+    },
   ];
 
   const skills = {
