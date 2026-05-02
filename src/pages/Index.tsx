@@ -95,9 +95,9 @@ const Portfolio = () => {
   const [formErrors, setFormErrors] = useState({}) as any;
 
   const heroPortraitUrl =
-    'https://res.cloudinary.com/dpp46k83h/image/upload/v1776696938/bolaji-01_f8fh3a.png';
+    '/bj.webp';
   const heroPortraitFallbackUrl =
-    'https://res.cloudinary.com/dpp46k83h/image/upload/v1753113423/DSC_3555_copy_2_cxynkl.jpg';
+    '';
   const heroRingPathId = `hero-verified-ring-${useId().replace(/:/g, '')}`;
   const [heroImgSrc, setHeroImgSrc] = useState(heroPortraitUrl);
 
@@ -507,7 +507,7 @@ const Portfolio = () => {
 
           <div className="grid min-h-screen flex-1 grid-cols-1 lg:grid-cols-[minmax(0,1.12fr)_minmax(280px,460px)]">
             <div className="order-2 flex flex-col justify-between px-4 pb-10 pt-12 sm:px-8 sm:pt-16 lg:order-none lg:max-w-none lg:px-12 lg:pt-28 xl:px-14 xl:pt-32">
-              <div className="flex flex-wrap gap-x-10 gap-y-8 sm:gap-x-14 sm:gap-x-20">
+              <div className="flex flex-wrap gap-x-10 gap-y-8  sm:gap-x-20">
                 <div>
                   <p className="text-4xl font-light tabular-nums tracking-tight text-[hsl(var(--portfolio-ink))] sm:text-5xl md:text-6xl">
                     +{projectCount}
