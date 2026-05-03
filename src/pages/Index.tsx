@@ -300,7 +300,7 @@ const Portfolio = () => {
       id: 14,
       title: "Server Monitoring Tool",
       type: "Cloud",
-      image: "/dops.webp",
+      image: "/dops2.webp",
       description: "I built a server monitoring and health check tool that ensures server is always available and healthy. It checks for server uptime, resource usage, and sends alerts if any issues are detected.",
       technologies: ["Linux", "Bash","GCP Compute Engine"],
       liveDemo: "https://server-crack.hashnode.dev/building-a-gcp-system-monitoring-auto-healing-script-with-slack-alerts-beginner-friendly-devops-project",
